@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weihnachts-Geschenke</title>
+  <style>
+    /* --- Grunddesign --- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica", Arial, sans-serif;
+      background: #f0f8ff;
+      text-align: center; /* Zentrale Ausrichtung der Inhalte */
+    }
+    h1 {
+      margin-top: 20px;
+      color: #d32f2f;
+    }
+
+    /* --- Weihnachtsbaum-Bereich (tree.png) --- */
+    .tree {
+      margin: 20px auto;
+      max-width: 300px;
+      display: block;
+    }
+
+    /* --- Container für die Boxen --- */
+    .gift-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 30px;
+    }
+
+    /* --- Geschenkboxen --- */
+    .gift {
+      width: 140px;
+      height: 160px;
+      margin: 15px;
+      background-color: #d32f2f; /* Rotes Geschenk */
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s;
+    }
+    .gift:hover {
+      transform: scale(1.05);
+    }
+
+    /* --- Geschenkband (vertikal) --- */
+    .gift::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: calc(50% - 5px);
+      width: 10px;
+      height: 100%;
+      background-color: #fff;
+    }
+
+    /* --- Geschenkband (horizontal) --- */
+    .gift::after {
+      content: "";
+      position: absolute;
+      top: calc(50% - 5px);
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background-color: #fff;
+    }
+
+    /*
+      --- Namens-Label in der Box ---
+      Du kannst hier text-align: left; (links)
+      oder text-align: right; (rechts) einstellen.
+      Außerdem kannst du den 'left' oder 'right' Wert anpassen,
+      um den Text in der Box zu verschieben.
+    */
+    .gift-name {
+      position: absolute;
+      top: 10px;
+      /* Du kannst hier 'left: 10px;' setzen, wenn linksbündig gewünscht
+         oder 'right: 10px;' bei rechtsbündig. */
+      left: 10px;
+      width: calc(100% - 20px); /* Platz für Padding links/rechts */
+      text-align: left;         /* linksbündig */
+      color: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+      z-index: 10; /* Damit der Name über dem Band liegt */
+    }
+
+    /* --- Container für Beschreibung / Geschenk-Inhalt --- */
+    #description {
+      margin: 0 auto 20px auto;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      max-width: 400px;
+      display: none; /* Anfangs versteckt */
+    }
+    #description h3 {
+      margin-top: 0;
+      color: #d32f2f;
+    }
+
+    /* --- Fehlermeldung --- */
+    #error {
+      color: #d32f2f;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Frohe Weihnachten! 🎄</h1>
+  
+  <!-- Optional: Weihnachtsbaum-Bild (tree.png muss im gleichen Ordner sein) -->
+  <img src="tree.png" alt="Weihnachtsbaum" class="tree"/>
+
+  <!-- Geschenk-Container -->
+  <div class="gift-container">
+    <!-- Marian -->
+    <div class="gift" onclick="openGift('Marian')">
+      <div class="gift-name">Marian</div>
+    </div>
+    <!-- David -->
+    <div class="gift" onclick="openGift('David')">
+      <div class="gift-name">David</div>
+    </div>
+    <!-- Julia -->
+    <div class="gift" onclick="openGift('Julia')">
+      <div class="gift-name">Julia</div>
+    </div>
+    <!-- Christopher -->
+    <div class="gift" onclick="openGift('Christopher')">
+      <div class="gift-name">Christopher</div>
+    </div>
+    <!-- Patrick -->
+    <div class="gift" onclick="openGift('Patrick')">
+      <div class="gift-name">Patrick</div>
+    </div>
+    <!-- Tanja -->
+    <div class="gift" onclick="openGift('Tanja')">
+      <div class="gift-name">Tanja</div>
+    </div>
+  </div>
+
+  <!-- Bereich für Beschreibung/Geschenk-Inhalt -->
+  <div id="description"></div>
+  <div id="error"></div>
+
+  <script>
+    /*
+      In diesem Objekt legst du für jede Person fest:
+       - "code": das Passwort/Codewort
+       - "desc": die Nachricht/Beschreibung/Geschenkidee
+    */
+    const gifts = {
+      "Marian": {
+        code: "Marian123",
+        desc: "Marian, frohe Weihnachten! Dein Geschenk ist ein selbstgemachtes Fotoalbum."
+      },
+      "David": {
+        code: "David2023",
+        desc: "Hey David, du bekommst ein Fitness-Paket samt Trainingsplan für ein sportliches neues Jahr!"
+      },
+      "Julia": {
+        code: "JuliaSecret",
+        desc: "Julia, hier wartet ein Wellness-Tag-Gutschein mit Massage und Sauna auf dich."
+      },
+      "Christopher": {
+        code: "ChrisCode",
+        desc: "Christopher, du bekommst ein personalisiertes Kochbuch mit deinen Lieblingsgerichten."
+      },
+      "Patrick": {
+        code: "PatrickPass",
+        desc: "Patrick, dein Geschenk ist ein Gaming-Gutschein und ein personalisierter Controller!"
+      },
+      "Tanja": {
+        code: "TanjaOne",
+        desc: "Tanja, du bekommst eine Überraschungsbox voller DIY-Kunstprojekte."
+      }
+    };
+
+    function openGift(name) {
+      const userInput = prompt(`Bitte Code für ${name} eingeben:`);
+
+      const descriptionBox = document.getElementById("description");
+      const errorBox = document.getElementById("error");
+
+      // Alle Fehlermeldungen & Beschreibungen zurücksetzen
+      descriptionBox.style.display = "none";
+      errorBox.innerText = "";
+
+      // Code prüfen
+      if (userInput === gifts[name].code) {
+        // Richtiges Codewort → Beschreibung anzeigen
+        descriptionBox.innerHTML = `
+          <h3>${name}'s Geschenk</h3>
+          <p>${gifts[name].desc}</p>
+        `;
+        descriptionBox.style.display = "block";
+      } else {
+        // Falscher Code → Fehlermeldung
+        errorBox.innerText = "Falsches Codewort! Versuche es noch einmal.";
+      }
+    }
+  </script>
+</body>
+</html>
