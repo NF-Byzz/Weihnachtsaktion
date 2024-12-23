@@ -33,13 +33,12 @@
       max-width: 800px; /* Optional: Begrenzung der Breite */
     }
 
-    /* --- Geschenkboxen --- */
+    /* --- Geschenkboxen (Grundlayout) --- */
     .gift {
       position: relative;
       width: 140px;
       height: 160px;
       margin: 15px;
-      background-color: #d32f2f; /* Rotes Geschenk */
       border-radius: 10px;
       cursor: pointer;
       box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -47,6 +46,34 @@
     }
     .gift:hover {
       transform: scale(1.05);
+    }
+
+    /* 
+      --- Jede Box erhält eine andere Farbe ---
+      nth-of-type(1) => Marian
+      nth-of-type(2) => David
+      nth-of-type(3) => Tanja
+      nth-of-type(4) => Julia
+      nth-of-type(5) => Christopher
+      nth-of-type(6) => Patrick
+    */
+    .gift:nth-of-type(1) {
+      background-color: #E53935; /* Rot */
+    }
+    .gift:nth-of-type(2) {
+      background-color: #43A047; /* Grün */
+    }
+    .gift:nth-of-type(3) {
+      background-color: #FB8C00; /* Orange */
+    }
+    .gift:nth-of-type(4) {
+      background-color: #3949AB; /* Blau/Violett */
+    }
+    .gift:nth-of-type(5) {
+      background-color: #8E24AA; /* Lila */
+    }
+    .gift:nth-of-type(6) {
+      background-color: #FDD835; /* Gelb */
     }
 
     /* --- Geschenkband (vertikal) --- */
@@ -71,12 +98,16 @@
       background-color: #fff;
     }
 
-    /* --- Namens-Label in der Box --- */
+    /* 
+      --- Namens-Label in der Box, linksbündig ---
+      Wir platzieren den Text links am oberen Rand.
+    */
     .gift-name {
       position: absolute;
       top: 10px;
-      width: 100%;
-      text-align: center;
+      left: 10px;     /* Abstand vom linken Rand */
+      right: 10px;    /* optional, falls du mehr Platz möchtest */
+      text-align: left;
       color: #fff;
       font-weight: bold;
       font-size: 1rem;
@@ -93,7 +124,7 @@
       background-color: #fff;
       max-width: 400px;
       display: none; /* Anfangs versteckt */
-      text-align: left; 
+      text-align: left;
     }
     #description h3 {
       margin-top: 0;
@@ -111,7 +142,7 @@
 <body>
   <h1>Frohe Weihnachten!</h1>
 
-  <!-- Weihnachtsbaum-Bild: Stelle sicher, dass tree.png im gleichen Ordner liegt -->
+  <!-- Weihnachtsbaum-Bild: Stelle sicher, dass tree.png im gleichen Ordner wie index.html liegt -->
   <img src="tree.png" alt="Weihnachtsbaum" class="tree" />
 
   <!-- Container für die Geschenkboxen -->
@@ -149,7 +180,7 @@
   <script>
     async function openGift(name) {
       const userInput = prompt(`Bitte Code für ${name} eingeben:`);
-      if (!userInput) return; // Wenn abgebrochen
+      if (!userInput) return; // Abbruch, wenn nichts eingegeben
 
       const descriptionBox = document.getElementById("description");
       const errorBox = document.getElementById("error");
@@ -160,7 +191,7 @@
       errorBox.innerText = "";
 
       try {
-        // POST-Request an die Netlify Function
+        // POST-Request an deine Netlify Function (oder anderen Server-Endpunkt)
         const response = await fetch("/.netlify/functions/checkCode", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -177,7 +208,7 @@
           `;
           descriptionBox.style.display = "block";
         } else {
-          // Fehler (404 oder 401)
+          // Fehler (z.B. 404 oder 401)
           errorBox.innerText = data.error || "Fehler!";
         }
       } catch (err) {
