@@ -1,0 +1,7 @@
+[build]
+  # Wo liegt deine statische Website?
+  # "." bedeutet: index.html liegt im Projekt-Root
+  publish = "."
+
+  # Ordner für Serverless Functions
+  functions = "netlify/functions"
