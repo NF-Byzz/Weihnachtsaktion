@@ -23,9 +23,9 @@ exports.handler = async (event) => {
         code: process.env.JULIA_CODE,
         voucher: process.env.JULIA_VOUCHER
       },
-      "Christoph": {
-        code: process.env.Christoph_CODE,
-        voucher: process.env.Christoph_VOUCHER
+      "CHRISTOPH": {
+        code: process.env.CHRISTOPH_CODE,
+        voucher: process.env.CHRISTOPH_VOUCHER
       },
       "Patrick": {
         code: process.env.PATRICK_CODE,
