@@ -23,7 +23,7 @@ exports.handler = async (event) => {
         code: process.env.JULIA_CODE,
         voucher: process.env.JULIA_VOUCHER
       },
-      "CHRISTOPH": {
+      "Christoph": {
         code: process.env.CHRISTOPH_CODE,
         voucher: process.env.CHRISTOPH_VOUCHER
       },
